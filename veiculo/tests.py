@@ -3,7 +3,7 @@ from .models import Veiculo
 import unittest
 import json
 
-class VeiculoTest(unittest.TestCase):
+class TestVeiculo(unittest.TestCase):
 
     def setUp(self):
         self.client = Client()
