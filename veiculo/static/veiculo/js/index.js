@@ -421,6 +421,7 @@ const get_by_marca_modelo = async  (termo) => {
         424: error_function_dependency
     }
 
+
     try {
         const response = await request(url, settings)
         const dados = await response.json()
