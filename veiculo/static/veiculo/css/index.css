@@ -1,0 +1,8 @@
+.hidden {
+    display: none;
+}
+
+.remove_azul:focus {
+    outline: none;
+    box-shadow: none;
+}

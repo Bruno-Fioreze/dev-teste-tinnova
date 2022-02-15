@@ -1,5 +1,33 @@
 //utils
 
+const set_border = (elemento) => {
+    elemento.classList.add("border-danger", "remove_azul")
+    setTimeout( () => {
+        elemento.classList.remove("border-danger", "remove_azul")
+    }, 3000)
+}
+
+
+const validate_marca = (elemento) => {
+    const value = elemento.value
+    if (document.getElementById("autocomplete_marca").querySelectorAll(`option[value='${value}']`).length == 0){
+        elemento.focus()
+        set_border(elemento)
+        return
+    }
+}
+
+const populate_autocomplete = (marcas) => {
+    limpa_conteudo_elemento("autocomplete_marca")
+    let datalist = document.getElementById("autocomplete_marca")
+    marcas.forEach(function(apelido, key){
+        option = document.createElement("option")
+        option.setAttribute("data-id", `${apelido["id"]}`)
+        option.value = `${apelido["marca"]}`
+        datalist.appendChild(option)
+    })
+}
+
 const limpa_conteudo_elemento = (id_elemento) => {
     id_elemento = document.getElementById(id_elemento) 
     while(id_elemento.firstChild) id_elemento.removeChild(id_elemento.firstChild)
@@ -321,6 +349,35 @@ const deletar_veiculo = async  (pk) => {
     }
 }
 
+const get_all_marca = async () => {
+        
+    const location = `${window.location.protocol}${window.location.host}`
+    const url = `${location}/marca/`
+
+    const settings = {
+        "method": "GET",
+    }
+    alerta_carregando()
+    
+    const response_code = {
+        200: success,
+        404: not_found,
+        422: error_parameters,
+        500: error_internal,
+        424: error_function_dependency
+    }
+
+    try {
+        const response = await request(url, settings)
+        const dados = await response.json()
+        swal.close()
+        response_code[response.status](dados, populate_autocomplete)
+    } catch (e){
+        console.log(e)
+        swal.close()
+        get_swal_alert(["Erro !", "Ocorreu um erro inesperado.", "error"])
+    }
+}
 
 // alerts response
 const get_swal_alert = ([title, text, icon] = par) => {
@@ -378,6 +435,7 @@ const error_function_dependency = () => {
 //ações iniciais
 const acoes_iniciais = () => {
     get_all_veiculo()
+    get_all_marca()
 }
 
 window.addEventListener("load", acoes_iniciais)

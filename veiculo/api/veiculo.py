@@ -13,8 +13,6 @@ from rest_framework.decorators import action
 from veiculo.serializers.serializers import VeiculoSerializer
 from veiculo.models import Veiculo
 
-
-
 class VeiculoViewSet(viewsets.ViewSet):
     queryset = Veiculo.objects
     serializer_class= VeiculoSerializer
