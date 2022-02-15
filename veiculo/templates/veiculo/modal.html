@@ -9,30 +9,34 @@
         <div class="modal-body">
             <div class="sessao--form--cadastro"> 
                 <form id="form--cadastro" class="col-md-12">
-                        <div class="">
-                            <label> Veículo <label>
-                            <input id="cadastro_veiculo" name="veiculo" class="form-control" >
+                        <<div class="row">
+                            <div class="col-md-3">
+                                <label> Veículo <label>
+                                <input id="cadastro_veiculo" name="veiculo" class="form-control" >
+                            </div>
+                            <div class="col-md-3">
+                                <label> Marca <label>
+                                <input id="cadastro_marca" name="marca" class="form-control"  list="autocomplete_marca"  onblur='validate_marca(this)' >
+                            </div>
+                            <div class="col-md-2">
+                                <label> Ano <label>
+                                <input id="cadastro_ano" name="ano" class="form-control" >
+                            </div>
+                            <div class="col-md-3">
+                                <label> Descrição <label>
+                                <input id="cadastro_descricao" name="descricao" class="form-control" >
+                            </div>
                         </div>
-                        <div class="">
-                            <label> Marca <label>
-                            <input id="cadastro_marca" name="marca" class="form-control" list="autocomplete_marca" onblur='validate_marca(this)' >
+                        <div class="row">
+                            <div class="col-md-1">
+                                <label> Vendido <label>
+                                    <select  id="cadastro_vendido" class="form-control" name="vendido">
+                                    <option value="">  </option>
+                                    <option value="true"> Sim </option>
+                                    <option value="false"> Não </option>
+                                    </select>
+                            </div>
                         </div>
-                        <div class="">
-                            <label> Ano <label>
-                            <input id="cadastro_ano" name="ano" class="form-control" >
-                        </div>
-                    <div class="">
-                        <label> Vendido <label>
-                         <select class="form-control" name="vendido">
-                            <option value="">  </option>
-                            <option value="1"> Sim </option>
-                            <option value="0"> Não </option>
-                         </select>
-                    </div>
-                    <div class="">
-                        <label> Descrição <label>
-                        <input id="cadastro_ano" name="descricao" class="form-control" >
-                    </div>
                 </form>
             </div>
         </div>
@@ -56,33 +60,38 @@
                 <div class='sessao-form-campos-ocultos'>
                     <input id="atualiza_pk" name="pk" class="form-control" type="hidden" >
                 </div>
-                <form id="form--atualiza" class="col-md-12">
-                        
-                        <div class="">
-                            <label> Veículo <label>
-                            <input id="atualiza_veiculo" name="veiculo" class="form-control" >
+                <div class="row">
+                    <form id="form--atualiza" class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label> Veículo <label>
+                                <input id="atualiza_veiculo" name="veiculo" class="form-control" >
+                            </div>
+                            <div class="col-md-3">
+                                <label> Marca <label>
+                                <input id="atualiza_marca" name="marca" class="form-control"  list="autocomplete_marca"  onblur='validate_marca(this)' >
+                            </div>
+                            <div class="col-md-2">
+                                <label> Ano <label>
+                                <input id="atualiza_ano" name="ano" class="form-control" >
+                            </div>
+                            <div class="col-md-3">
+                                <label> Descrição <label>
+                                <input id="atualiza_descricao" name="descricao" class="form-control" >
+                            </div>
                         </div>
-                        <div class="">
-                            <label> Marca <label>
-                            <input id="atualiza_marca" name="marca" class="form-control"  list="autocomplete_marca"  onblur='validate_marca(this)' >
+                        <div class="row">
+                            <div class="col-md-1">
+                                <label> Vendido <label>
+                                    <select  id="atualiza_vendido" class="form-control" name="vendido">
+                                    <option value="">  </option>
+                                    <option value="true"> Sim </option>
+                                    <option value="false"> Não </option>
+                                    </select>
+                            </div>
                         </div>
-                        <div class="">
-                            <label> Ano <label>
-                            <input id="atualiza_ano" name="ano" class="form-control" >
-                        </div>
-                    <div class="">
-                        <label> Vendido <label>
-                         <select  id="atualiza_vendido" class="form-control" name="vendido">
-                            <option value="">  </option>
-                            <option value="true"> Sim </option>
-                            <option value="false"> Não </option>
-                         </select>
-                    </div>
-                    <div class="">
-                        <label> Descrição <label>
-                        <input id="atualiza_descricao" name="descricao" class="form-control" >
-                    </div>
                 </form>
+                </div>
             </div>
         </div>
         <div class="modal-footer">
