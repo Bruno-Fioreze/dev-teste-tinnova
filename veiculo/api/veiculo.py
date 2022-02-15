@@ -1,5 +1,5 @@
 #django imports
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404,  get_list_or_404
 from django.db.models import Q
 from datetime import datetime
 
@@ -12,6 +12,7 @@ from rest_framework.decorators import action
 #my imports 
 from veiculo.serializers.serializers import VeiculoSerializer
 from veiculo.models import Veiculo
+
 
 
 class VeiculoViewSet(viewsets.ViewSet):
@@ -35,12 +36,17 @@ class VeiculoViewSet(viewsets.ViewSet):
     #z#def retrieve(self, request, pk=None):
     #@action(detail=True, methods=["get"])
     def retrieve(self, request, *args, **kwargs):
-        termo = kwargs.get("pk", None)
-        if termo.isdigit():
-            veiculo = get_object_or_404(self.queryset,  ano=termo)
+        termo, by_pk, is_many = kwargs.get("pk", None), request.GET.get("by_pk", None),  True
+        fields = {"veiculo", "marca", "ano", "id"}
+        if by_pk:
+            veiculo = get_object_or_404(self.queryset,  pk=termo)
+            is_many = False 
+            fields = {"veiculo", "marca", "ano", "id", "vendido", "descricao"}
+        elif termo.isdigit() and by_pk == None:
+            veiculo = get_list_or_404(self.queryset,  ano=termo)
         else:
-            veiculo = get_object_or_404(self.queryset,  marca=termo)
-        serializer = self.serializer_class(veiculo)
+            veiculo = get_list_or_404(self.queryset,  marca=termo)
+        serializer = self.serializer_class(veiculo, fields=fields, many=is_many)
         return Response(serializer.data, status=StatusCode.HTTP_200_OK)
 
     def update(self, request, pk=None):

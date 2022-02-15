@@ -9,4 +9,5 @@ router.register(r'veiculo', VeiculoViewSet)
 # The API URLs are now determined automatically by the router.
 urlpatterns = [
     path("", index),
-]
+    path('', include(router.urls)),
+] 
