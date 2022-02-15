@@ -36,7 +36,7 @@ class VeiculoViewSet(viewsets.ViewSet):
     #@action(detail=True, methods=["get"])
     def retrieve(self, request, *args, **kwargs):
         termo, by_pk, is_many = kwargs.get("pk", None), request.GET.get("by_pk", None),  True
-        fields = {"veiculo", "marca", "ano", "id"}
+        fields = {"veiculo", "marca", "ano", "id", "vendido"}
         if by_pk:
             veiculo = get_object_or_404(self.queryset,  pk=termo)
             is_many = False 
