@@ -19,6 +19,14 @@ class VeiculoViewSet(viewsets.ViewSet):
     serializer_class= VeiculoSerializer
     
     def list(self, request):
+        """Método responsável por retornar listas.
+
+        Args:
+            termo, e by_termo (str e str):  termo e by_termo são opcionais
+
+        Returns:
+            json: lista
+        """
         termo, by_termo = request.GET.get('termo', None), request.GET.get('termo', None)
         if termo == None:
             veiculos = self.queryset.all()
@@ -30,6 +38,14 @@ class VeiculoViewSet(viewsets.ViewSet):
         return Response(serializer.data, status=StatusCode.HTTP_200_OK)
 
     def create(self, request):
+        """Método responsáavel por Criar instância.
+
+        Args:
+            Ano e Marca (int e str): obrigatórios.
+
+        Returns:
+            json: return um json com os dados do veículo
+        """
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid(raise_exception=True) : 
             serializer.save()
@@ -41,6 +57,14 @@ class VeiculoViewSet(viewsets.ViewSet):
     #z#def retrieve(self, request, pk=None):
     #@action(detail=True, methods=["get"])
     def retrieve(self, request, *args, **kwargs):
+        """Método responsável por devolver os dados de uma instância.
+
+        Args:
+            pk (int): Obrigatório
+
+        Returns:
+            json: retorna um json com os dados.
+        """
         termo = kwargs.get("pk", None)
         veiculo = get_object_or_404(self.queryset,  pk=termo)
         fields = {"veiculo", "marca", "ano", "id", "vendido", "descricao"}
@@ -48,6 +72,14 @@ class VeiculoViewSet(viewsets.ViewSet):
         return Response(serializer.data, status=StatusCode.HTTP_200_OK)
 
     def update(self, request, pk=None):
+        """Método responsável por atualizar completamente a instância.
+
+        Args:
+            pk (int): Obrigatório
+
+        Returns:
+            json: Retorna um json com o id e uma mensagem
+        """
         response, data = {}, {}
         if not self.queryset.filter(pk=pk).exists():
             response = {"message": "Not exists"}
@@ -59,6 +91,14 @@ class VeiculoViewSet(viewsets.ViewSet):
         return Response(response, status=StatusCode.HTTP_200_OK)
 
     def partial_update(self, request, pk=None):
+        """Método responsável por atualizar parcialmente a instância.
+
+        Args:
+            pk (int): Obrigatório
+
+        Returns:
+            json: Retorna um json com o id e uma mensagem
+        """
         response, data = {}, {}
         if not self.queryset.filter(pk=pk).exists():
             response = {"message": "Not found"}
@@ -71,6 +111,14 @@ class VeiculoViewSet(viewsets.ViewSet):
         return Response(response, status=StatusCode.HTTP_200_OK)
 
     def destroy(self, request, pk=None):
+        """Método responsável por deletar a instância.
+
+        Args:
+            pk (int): Obrigatório
+
+        Returns:
+            json: retorna um json com o pk
+        """
         queryset = get_object_or_404(self.queryset, pk=pk)
         affected = queryset.delete()
         return Response(affected, status=StatusCode.HTTP_200_OK)
