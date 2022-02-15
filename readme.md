@@ -1,6 +1,10 @@
 
 ### Dependências
 
+- Javascript (ES6)
+- CSS
+- SweetAlert2
+- Bootstrap 5
 - Python
 - Django
 - Django-Rest
@@ -110,6 +114,6 @@ Caso esteja utilizando windows troque o python3 por python.
 A aplicação foi feita utilizando Python, Django, Django-Rest, Docker e UnitTest.
 
 ## Observações
-- Algumas da tarefas eu não tive tempo para concluir.
+- Eu não consegui concluir duas tarefas por falta de tempo sendo elas a atualização do contador de veículos não vendidos quando atualizamos o veículo e a listagem de veículos cadastrados na úlitima semana. A minha ideia era criar um filtro para esses veículos. 
 - Os exercício estão em um arquivo chamado exercício.py
-- 
+- O arquivo de dump só possui marcas de carros, pois é um teste não vi necessidade de colocar as marcas de outros veículos.
