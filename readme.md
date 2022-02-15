@@ -51,7 +51,7 @@ Caso esteja utilizando windows troque o python3 por python.
 
 - End-Point
 
-	> /veiculo/
+	> /veiculo/pk/
 
 - Verbo HTTP
 	> GET
@@ -73,7 +73,7 @@ Caso esteja utilizando windows troque o python3 por python.
 
 - End-Point
 
-	> /veiculo/
+	> /veiculo/pk/
 
 - Verbo HTTP
 	> DELETE
