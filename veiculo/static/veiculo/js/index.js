@@ -1,5 +1,11 @@
 //utils
 
+const get_elemento_by_termo = (termo) => {
+    let xpath = `//span[text()='${termo}']`;
+    let elemento = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+    return elemento
+}
+
 const set_border = (elemento) => {
     elemento.classList.add("border-danger", "remove_azul")
     setTimeout( () => {
@@ -124,6 +130,7 @@ const create_row_badge = (cls, array) => {
         let span = document.createElement("span")
         span.innerText = item
         span.classList.add("badge", "bg-success", "p-1", "m-1")
+        span.setAttribute("onclick", `get_by_marca_modelo('${item}')`)
         listagem.appendChild(span)
     }
 }
@@ -147,6 +154,13 @@ const create_grid = async (data) => {
     create_row_badge("sessao--filtro--marca", marca)
 }
 
+const create_grid_search_by_ano_marca =  (data) =>{
+    data.map(
+        (veiculo) => {
+            create_row(veiculo)
+        }
+    )
+}
 
 //requests
 
@@ -155,6 +169,7 @@ function request (url, settings) {
     return fetch(url, settings)
 }
 
+//veículo
 const get_all_veiculo = async () => {
     limpa_conteudo_elemento("listagem") 
     limpa_conteudo_elemento("filtro--ano")
@@ -230,6 +245,16 @@ const cadastrar_veiculo = async () => {
         const dados = await response.json()
         swal.close()
         response_code[response.status](dados, create_row)
+        // Eu não consegui fazer no update por falta de tempo.
+        if ( get_elemento_by_termo(validator.data.marca) == null){
+            create_row(dados)
+            let marca = [ dados.marca ]
+            create_row_badge("sessao--filtro--marca", marca)
+        }
+        if ( get_elemento_by_termo(validator.data.ano) == null){
+            let ano = [ dados.ano ]
+            create_row_badge("sessao--filtro--ano", ano)
+        }
     } catch (e){
         console.log(e)
         swal.close()
@@ -349,6 +374,38 @@ const deletar_veiculo = async  (pk) => {
     }
 }
 
+const get_by_marca_modelo = async  (termo) => {
+    limpa_conteudo_elemento("listagem")
+    const location = `${window.location.protocol}${window.location.host}`
+    const url = `${location}/veiculo/${termo}/`
+
+    const settings = {
+        "method": "GET",
+    }
+    alerta_carregando()
+    
+    const response_code = {
+        200: success,
+        404: not_found,
+        422: error_parameters,
+        500: error_internal,
+        424: error_function_dependency
+    }
+
+    try {
+        const response = await request(url, settings)
+        const dados = await response.json()
+        swal.close()
+        response_code[response.status](dados, create_grid_search_by_ano_marca)
+    } catch (e){
+        console.log(e)
+        swal.close()
+        get_swal_alert(["Erro !", "Ocorreu um erro inesperado.", "error"])
+    }
+}
+
+
+//marca
 const get_all_marca = async () => {
         
     const location = `${window.location.protocol}${window.location.host}`
@@ -439,3 +496,4 @@ const acoes_iniciais = () => {
 }
 
 window.addEventListener("load", acoes_iniciais)
+
