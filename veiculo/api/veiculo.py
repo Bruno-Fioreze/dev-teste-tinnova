@@ -19,8 +19,14 @@ class VeiculoViewSet(viewsets.ViewSet):
     serializer_class= VeiculoSerializer
     
     def list(self, request):
-        veiculos = self.queryset.all()
-        serializer = self.serializer_class(veiculos, many=True)
+        termo, by_termo = request.GET.get('termo', None), request.GET.get('termo', None)
+        if termo == None:
+            veiculos = self.queryset.all()
+        elif termo.isdigit() and by_termo != None:
+            veiculos = get_list_or_404(self.queryset,  ano=termo)
+        else:
+            veiculos = get_list_or_404(self.queryset,  marca=termo) 
+        serializer = self.serializer_class(veiculos, fields={"id", "veiculo", "marca", "ano", "descricao", "vendido"}, many=True)
         return Response(serializer.data, status=StatusCode.HTTP_200_OK)
 
     def create(self, request):
@@ -35,17 +41,10 @@ class VeiculoViewSet(viewsets.ViewSet):
     #z#def retrieve(self, request, pk=None):
     #@action(detail=True, methods=["get"])
     def retrieve(self, request, *args, **kwargs):
-        termo, by_pk, is_many = kwargs.get("pk", None), request.GET.get("by_pk", None),  True
-        fields = {"veiculo", "marca", "ano", "id", "vendido"}
-        if by_pk:
-            veiculo = get_object_or_404(self.queryset,  pk=termo)
-            is_many = False 
-            fields = {"veiculo", "marca", "ano", "id", "vendido", "descricao"}
-        elif termo.isdigit() and by_pk == None:
-            veiculo = get_list_or_404(self.queryset,  ano=termo)
-        else:
-            veiculo = get_list_or_404(self.queryset,  marca=termo)
-        serializer = self.serializer_class(veiculo, fields=fields, many=is_many)
+        termo = kwargs.get("pk", None)
+        veiculo = get_object_or_404(self.queryset,  pk=termo)
+        fields = {"veiculo", "marca", "ano", "id", "vendido", "descricao"}
+        serializer = self.serializer_class(veiculo, fields=fields, many=False)
         return Response(serializer.data, status=StatusCode.HTTP_200_OK)
 
     def update(self, request, pk=None):

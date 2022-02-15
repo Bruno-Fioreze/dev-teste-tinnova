@@ -296,7 +296,7 @@ const abrir_modal_atualizar = async  (pk) => {
     })
     
     const location = `${window.location.protocol}${window.location.host}`
-    const url = `${location}/veiculo/${pk}/?by_pk=true`
+    const url = `${location}/veiculo/${pk}/`
 
     const settings = {
         "method": "GET",
@@ -406,7 +406,7 @@ const deletar_veiculo = async  (pk) => {
 const get_by_marca_modelo = async  (termo) => {
     limpa_conteudo_elemento("listagem")
     const location = `${window.location.protocol}${window.location.host}`
-    const url = `${location}/veiculo/${termo}/`
+    const url = `${location}/veiculo/?termo=${termo}&by_termo=true`
 
     const settings = {
         "method": "GET",
