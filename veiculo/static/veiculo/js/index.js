@@ -46,6 +46,10 @@ const remove_data_grid = (pk) => {
 const atualiza_grid =(data) => {
     document.getElementById(`veiculo_marca_${data.id}`).innerText = data["marca"]
     document.getElementById(`veiculo_ano_${data.id}`).innerText = data["ano"]
+    console.log(
+        data["vendido"]
+    ) 
+    //voltarei
 }
 
 const formata_saida_vendido = (vendido) => {
@@ -142,24 +146,36 @@ const verify_item_array = (array, item) => {
     return array
 }
 
+const set_nao_vendidos = (cont_vendidos) => {
+    cont_vendidos = parseInt(cont_vendidos)
+    document.getElementById("veiculo_nao_vendido").innerText = `Veículos não vendidos ${cont_vendidos}`
+    document.getElementById("veiculo_nao_vendido").setAttribute("cont_vendido", cont_vendidos)
+}
+
 const create_grid = async (data) => {
     let ano = []
     let marca = []
+    let cont_vendidos = 0
     for( veiculo of data  ){
         ano = await verify_item_array(ano, veiculo.ano)
         marca = await  verify_item_array(marca, veiculo.marca) 
         create_row(veiculo)
+        cont_vendidos += veiculo.vendido == false ? 1 : 0
     }
     create_row_badge("sessao--filtro--ano", ano)
     create_row_badge("sessao--filtro--marca", marca)
+    set_nao_vendidos(cont_vendidos)
 }
 
 const create_grid_search_by_ano_marca =  (data) =>{
+    let cont_vendidos = 0
     data.map(
         (veiculo) => {
             create_row(veiculo)
+            cont_vendidos += veiculo.vendido == false ? 1 : 0
         }
     )
+    set_nao_vendidos(cont_vendidos)
 }
 
 //requests
@@ -230,7 +246,7 @@ const cadastrar_veiculo = async () => {
         body: raw,
     };
 
-    alerta_carregando()
+    alerta_processando()
     
     const response_code = {
         200: success,
@@ -244,6 +260,8 @@ const cadastrar_veiculo = async () => {
         const response = await request(url, requestOptions)
         const dados = await response.json()
         swal.close()
+        // se eu tivesse mais eu teria removido o método create_tow e colocaria um para englobar todas as alterações abaixo.
+        // Dentro deste novo método eu criaria um método para cada situação
         response_code[response.status](dados, create_row)
         // Eu não consegui fazer no update por falta de tempo.
         if ( get_elemento_by_termo(validator.data.marca) == null){
@@ -255,6 +273,16 @@ const cadastrar_veiculo = async () => {
             let ano = [ dados.ano ]
             create_row_badge("sessao--filtro--ano", ano)
         }
+        if ( dados.vendido == false ){
+            let cont = parseInt(
+                document.getElementById("veiculo_nao_vendido").getAttribute("cont_vendido")
+            )
+            cont = cont + 1
+            set_nao_vendidos(cont)
+        }
+        
+        
+
     } catch (e){
         console.log(e)
         swal.close()
@@ -320,7 +348,7 @@ const atualizar_veiculo = async () => {
         body: raw,
     };
 
-    alerta_carregando()
+    alerta_processando()
     
     const response_code = {
         200: success,
@@ -337,6 +365,7 @@ const atualizar_veiculo = async () => {
         dados["marca"] = document.getElementById('atualiza_marca').value
         dados["ano"] = document.getElementById('atualiza_ano').value
         dados["id"] = validator.pk
+        dados["vendido"] = document.getElementById('atualiza_vendido').value
         response_code[response.status](dados, atualiza_grid)
     } catch (e){
         console.log(e)
@@ -352,7 +381,7 @@ const deletar_veiculo = async  (pk) => {
     const settings = {
         "method": "DELETE",
     }
-    alerta_carregando()
+    alerta_processando()
     
     const response_code = {
         200: success,
