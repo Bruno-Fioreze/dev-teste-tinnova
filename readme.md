@@ -36,7 +36,7 @@ Caso esteja utilizando windows troque o python3 por python.
 	> GET
 
 - Entrada
-	 by_pk opcional e termo opcional.
+	 by_termo opcional e termo opcional.
 	 
 - Saída
 
