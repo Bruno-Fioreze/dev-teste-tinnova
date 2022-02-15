@@ -2,6 +2,7 @@
 from django.shortcuts import get_object_or_404,  get_list_or_404
 from django.db.models import Q
 from datetime import datetime
+from django.http import Http404
 
 #3rd imports
 from rest_framework import viewsets
@@ -51,7 +52,7 @@ class VeiculoViewSet(viewsets.ViewSet):
         response, data = {}, {}
         if not self.queryset.filter(pk=pk).exists():
             response = {"message": "Not exists"}
-            return Response(response, status=StatusCode.HTTP_404_NOT_FOUND)
+            return Response(response, status=404)
         data = dict(request.data)
         data.update({"updated": datetime.now()})
         affected = self.queryset.filter(pk=pk).update(**data)
@@ -62,7 +63,7 @@ class VeiculoViewSet(viewsets.ViewSet):
         response, data = {}, {}
         if not self.queryset.filter(pk=pk).exists():
             response = {"message": "Not found"}
-            return Response(response, status=StatusCode.HTTP_404_NOT_FOUND)
+            return Response(response, status=404)
 
         data = dict(request.data)
         data.update({"updated": datetime.now()})
